@@ -1,47 +1,51 @@
 const FINISH_NODE = 'finish';
 
 class Graph {
-  
   constructor() {
     this.graph = new Map();
   }
 
-  _findLowestNode(trackedCost,processedNode) {
+  _findLowestNode(trackedCost, processedNode) {
     let lowestCost = Infinity;
     let lowestNode = null;
-    Object.keys(trackedCost).forEach(key => {
-      if( key !== FINISH_NODE && processedNode.indexOf(key) < 0 && lowestCost > trackedCost[key] ){
+    Object.keys(trackedCost).forEach((key) => {
+      if (
+        key !== FINISH_NODE
+        && processedNode.indexOf(key) < 0
+        && lowestCost > trackedCost[key]
+      ) {
         lowestCost = trackedCost[key];
         lowestNode = key;
       }
-    })
+    });
     return lowestNode;
   }
+
   // name as string
   // neighbors as map {B:5,C:5}
   addNode(name, neighbors) {
-    if (typeof name !== "string") {
-      throw Error("Node name should be string.");
+    if (typeof name !== 'string') {
+      throw Error('Node name should be string.');
     }
 
     if (neighbors instanceof Map) {
-      for (nextNode in neighbors.keys) {
+      for (const nextNode in neighbors.keys) {
         if (nextNode === name) {
-          throw Error("Input node should not appear in neighbors.");
+          throw Error('Input node should not appear in neighbors.');
         }
-        if ( neighbors[nextNode] < 0 ) {
-          throw Error("Input distance should not be negative number.");
+        if (neighbors[nextNode] < 0) {
+          throw Error('Input distance should not be negative number.');
         }
       }
       this.graph.set(name, neighbors);
     } else {
-      throw Error("Node neighbors should be Map.");
+      throw Error('Node neighbors should be Map.');
     }
   }
 
   path(start, goal) {
-    let startInList,
-      goalInList = false;
+    let startInList = false;
+    let goalInList = false;
 
     this.graph.forEach((value, key) => {
       if (key === start) {
@@ -54,7 +58,7 @@ class Graph {
       });
     });
     if (!(startInList && goalInList)) {
-      throw Error("Start Node or Goal Node does not exist.");
+      throw Error('Start Node or Goal Node does not exist.');
     }
 
     const processedNode = [goal];
@@ -63,36 +67,38 @@ class Graph {
     const trackedPath = {};
     trackedPath[FINISH_NODE] = null;
     // Add Start Point
-    this.graph.get(start).forEach((distance,nextNode) => {
+    this.graph.get(start).forEach((distance, nextNode) => {
       trackedCost[nextNode] = distance;
       trackedPath[nextNode] = start;
     });
-    let nextProcessNode = this._findLowestNode(trackedCost,processedNode);
-    while(nextProcessNode) {
+    let nextProcessNode = this._findLowestNode(trackedCost, processedNode);
+    while (nextProcessNode) {
       processedNode.push(nextProcessNode);
-      if(this.graph.get(nextProcessNode)) {
-      this.graph.get(nextProcessNode).forEach((distance,nextNode) => {
-        if( trackedCost[nextNode] == null || (trackedCost[nextProcessNode] + distance < trackedCost[nextNode] )) {
-          trackedCost[nextNode] = trackedCost[nextProcessNode] + distance;
-          trackedPath[nextNode] = nextProcessNode;
-        }
-      })
+      if (this.graph.get(nextProcessNode)) {
+        this.graph.get(nextProcessNode).forEach((distance, nextNode) => {
+          if (
+            trackedCost[nextNode] == null
+            || trackedCost[nextProcessNode] + distance < trackedCost[nextNode]
+          ) {
+            trackedCost[nextNode] = trackedCost[nextProcessNode] + distance;
+            trackedPath[nextNode] = nextProcessNode;
+          }
+        });
       }
 
-      nextProcessNode = this._findLowestNode(trackedCost,processedNode);
+      nextProcessNode = this._findLowestNode(trackedCost, processedNode);
     }
-    
-    if(Object.keys(trackedPath).indexOf(goal)< 0) {
-      throw Error("No path to destination.");
+
+    if (Object.keys(trackedPath).indexOf(goal) < 0) {
+      throw Error('No path to destination.');
     }
     // track path back
     let rootNode = goal;
     const resultPath = [goal];
-    while(rootNode !== start) {
+    while (rootNode !== start) {
       rootNode = trackedPath[rootNode];
       resultPath.push(rootNode);
     }
-    //this.graph.set(name, nodes);
     return { distance: trackedCost[goal], path: resultPath.reverse() };
   }
 }

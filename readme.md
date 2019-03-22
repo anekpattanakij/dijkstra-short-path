@@ -9,13 +9,13 @@ npm install dijkstra-short-path --save
 Basic example:
 
 ```js
-const Graph = require('dijkstra-short-path')
+const Graph = require('dijkstra-short-path');
 
-const route = new Graph()
+const route = new Graph();
 
-route.addNode('A', { B:1 })
-route.addNode('B', { A:2, C:2, D: 4 }) // Return B->A can be different from A->B.
-route.addNode('C', { B:2, D:1 })
+route.addNode('A', new Map([['B', 2], ['C', 5]]); // Distance list should be Map
+route.addNode('B', new Map([['A', 1], ['C', 2]]); // Distance from  B->A can be different from A->B.
+route.addNode('C', new Map([['D', 1]];
 
-route.path('A', 'D') // return => { cost:5 , path : [ 'A', 'B', 'C', 'D' ]}
+route.path('A', 'D'); // return => { cost:5 , path : [ 'A', 'B', 'C', 'D' ]}
 ```
