@@ -1,5 +1,3 @@
-const FINISH_NODE = 'finish';
-
 class Graph {
   constructor() {
     this.graph = new Map();
@@ -10,8 +8,7 @@ class Graph {
     let lowestNode = null;
     Object.keys(trackedCost).forEach((key) => {
       if (
-        key !== FINISH_NODE
-        && processedNode.indexOf(key) < 0
+        processedNode.indexOf(key) < 0
         && lowestCost > trackedCost[key]
       ) {
         lowestCost = trackedCost[key];
@@ -63,9 +60,9 @@ class Graph {
 
     const processedNode = [goal];
     const trackedCost = {};
-    trackedCost[FINISH_NODE] = Infinity;
+    trackedCost[goal] = Infinity;
     const trackedPath = {};
-    trackedPath[FINISH_NODE] = null;
+    trackedPath[goal] = null;
     // Add Start Point
     this.graph.get(start).forEach((distance, nextNode) => {
       trackedCost[nextNode] = distance;
@@ -89,7 +86,7 @@ class Graph {
       nextProcessNode = this._findLowestNode(trackedCost, processedNode);
     }
 
-    if (Object.keys(trackedPath).indexOf(goal) < 0) {
+    if (trackedPath[goal] === null) {
       throw Error('No path to destination.');
     }
     // track path back
