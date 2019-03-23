@@ -1,6 +1,6 @@
 {
   "name": "dijkstra-short-path",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Dijkstra's algorithm implentation by Node.js",
   "author": "Anupol Anekpattanakij <a.anekpattanakij@gmail.com>",
   "main": "libs/Graph.js",
