@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "Dijkstra's algorithm implentation by Node.js",
   "author": "Anupol Anekpattanakij <a.anekpattanakij@gmail.com>",
-  "main": "libs/Graph.js",
+  "main": "libs/graph.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/anekpattanakij/dijkstra-short-path"
